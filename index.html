@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For You ❤️ | Interactive Romantic Journey</title>
+  <meta name="description" content="A special, ultra-premium interactive romantic proposal and love letter built with hearts, vinyl music, mini-games and fireworks." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+
+  <!-- Floating Particles Canvas -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Floating Control Bar -->
+  <div class="control-bar" style="justify-content: flex-end;">
+    <button class="control-btn" id="btn-sound" title="Toggle Sound">🔊</button>
+  </div>
+
+  <!-- Screen 1: Countdown -->
+  <div class="screen active" id="screen-countdown">
+    <span id="countdown-num" class="countdown-pulse">3</span>
+  </div>
+
+  <!-- Screen 2: Initializing Love.exe -->
+  <div class="screen" id="screen-loader">
+    <div class="loader-title" id="loader-status">Initializing Love.exe...</div>
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progress-bar"></div>
+    </div>
+    <div class="loader-percentage" id="loader-pct">0%</div>
+    <div class="found-pill" id="found-pill" onclick="switchScreen('screen-loader', 'screen-envelope')">
+      <span>Found 1 Result ❤️</span>
+    </div>
+  </div>
+
+  <!-- Screen 3: 3D Envelope & Unrolling Parchment Letter -->
+  <div class="screen" id="screen-envelope">
+    <div class="envelope-tip" id="envelope-tip">A Special Letter Has Arrived</div>
+    
+    <div class="envelope-stage" id="envelope-stage">
+      <div class="envelope-box" id="envelope-box" onclick="openEnvelope()">
+        <div class="envelope-back"></div>
+        <div class="envelope-paper-inside" id="envelope-paper-inside">
+          <div class="paper-line"></div>
+          <div class="paper-line short"></div>
+          <div class="paper-preview-text">For Madhu Bangaram...</div>
+        </div>
+        <div class="envelope-front-pocket"></div>
+        <div class="envelope-flap" id="envelope-flap"></div>
+        <div class="envelope-stamp" id="envelope-stamp">💌</div>
+      </div>
+      <div class="envelope-instruction" id="envelope-instruction">Tap the envelope to unseal it ✨</div>
+    </div>
+
+    <!-- Parchment Love Letter Rolling Out Directly From Envelope -->
+    <div class="letter-parchment" id="letter-parchment">
+      <div class="card-script-title" id="letter-recipient-title">for madhu bangaram</div>
+      <div class="letter-scroll-area">
+        <p class="letter-para highlight-heading">Happy 1st Anniversary, My Love 🌸✨</p>
+        <p class="letter-para">Exactly 365 days ago, our story began, and I truly had no idea how completely you would change my world 💫💖</p>
+        <p class="letter-para">In this one year, you've made my life more beautiful and peaceful than I ever thought possible 🌷 Every late-night conversation 🌙, every quiet laugh ✨, and every simple message 💌 from you has been the absolute best part of my days. You aren't just my girlfriend; you're my safe place and my favorite feeling 🏡💕</p>
+        <p class="letter-para">People say that over time love turns into a routine, but with you, every single day makes me fall even deeper 🌊❤️</p>
+        <p class="letter-para">Year one was just our introduction 📖✨ I don't just want more anniversaries with you—I want a lifetime of them ♾️🤍 Thank you for giving me the best 365 days of my life 🥹🌹</p>
+        <div class="letter-questions-block">
+          <p class="letter-para questions-lead">So today, on our first anniversary, I only have three questions for you Madhodaa :</p>
+          <div class="question-list">
+            <div class="q-item">Will you be my girlfriend? 🙈❤️</div>
+            <div class="q-item">Will you be my strength? 🫂✨</div>
+            <div class="q-item">And one day... will you be my wife? 💍👰‍♀️🌸</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="switchScreen('screen-envelope', 'screen-anniversary-card')" style="margin-top: 1.2rem;">Continue ❤️</button>
+    </div>
+  </div>
+
+  <!-- Screen 7: The Proposal Question -->
+  <div class="screen" id="screen-anniversary-card">
+    <div class="glass-card" id="proposal-card">
+      <div class="proposal-title" id="proposal-text">Happy 1st Anniversary, Madhu Bangaram! ❤️<br><span style="font-size: 1.25rem; font-weight: 800; opacity: 0.95; color: #ff8fab; display: inline-block; margin-top: 6px;">I LOVE YOU MADHU SREE ❤️</span></div>
+      <div class="proposal-buttons">
+        <button class="btn-yes" id="btn-yes" onclick="onStep1Accepted()">PROPOSAL ACCEPTED ❤️</button>
+        <button class="btn-no" id="btn-no" onmouseenter="onStep1NotSureDodge(this)" onclick="onStep1NotSureDodge(this)">NOT SURE 🙈</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 7.5: Proposal Acceptance Verification Question -->
+  <div class="screen" id="screen-confirm-card">
+    <div class="glass-card">
+      <div style="font-size: 3.5rem; margin-bottom: 0.8rem; filter: drop-shadow(0 0 15px rgba(255, 117, 140, 0.6));">🥺💖</div>
+      <h2 style="font-size: 1.85rem; font-weight: 800; margin-bottom: 0.6rem; color: #ffffff;">Did you really accept my proposal? 🥺</h2>
+      <p style="opacity: 0.88; font-size: 1.05rem; margin-bottom: 1.8rem; color: var(--accent-pink);">Pinky promise forever and ever? ✨</p>
+      <div style="display: flex; flex-direction: column; gap: 16px; width: 100%; align-items: center; position: relative; min-height: 150px;">
+        <button class="btn-yes" id="btn-yes-confirm" onclick="onStep2Confirmed()" style="width: auto; max-width: 90%;">YES, 100% FOREVER! 💖</button>
+        <button class="btn-no" id="btn-no-confirm" onmouseenter="onStep2NoDodge(this)" onclick="onStep2NoDodge(this)">NO 🙈</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 7.6: Required Text Response Question -->
+  <div class="screen" id="screen-custom-message-card">
+    <div class="glass-card">
+      <div style="font-size: 3.5rem; margin-bottom: 0.8rem; filter: drop-shadow(0 0 15px rgba(255, 117, 140, 0.6));">🥺💬</div>
+      <h2 style="font-size: 1.85rem; font-weight: 800; margin-bottom: 0.6rem; color: #ffffff;">Did you accept my proposal for real? 🥺</h2>
+      <p style="opacity: 0.88; font-size: 1.02rem; margin-bottom: 1.5rem; color: var(--accent-pink);">No options here! Please write your response ❤️</p>
+      
+      <div class="response-box-wrapper">
+        <textarea id="sweet-answer-input" class="romantic-textarea" placeholder="Write your sweet answer here... 💕" rows="3"></textarea>
+        <div class="input-error-tip" id="text-response-error" style="display: none;">A text response is required to proceed! ✍️🥺</div>
+      </div>
+
+      <button class="btn-yes" id="btn-submit-response" onclick="onSubmitFinalAnswer()" style="margin-top: 1.4rem; width: auto; max-width: 90%;">Submit My Answer ❤️</button>
+    </div>
+  </div>
+
+  <!-- Screen 8: Finale Celebration -->
+  <div class="screen" id="screen-finale">
+    <div class="glass-card">
+      <h1 style="font-size: 2.4rem; font-weight: 900; margin-bottom: 0.4rem; color: #ff8fab;" id="finale-header">Yayyyyyyyyy ❤️</h1>
+      <p style="opacity: 0.85; font-size: 1rem; margin-bottom: 0.4rem;">Officially...</p>
+      <div class="ring-icon">💍</div>
+      <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.8rem; color: var(--accent-pink);">I Promise...</h3>
+      <p style="font-size: 1.05rem; line-height: 1.6; opacity: 0.92; margin-bottom: 1.8rem;" id="promise-text">
+        I promise to do everything I can to make you smile every single day. ✨
+      </p>
+      <button class="btn-primary" onclick="openCertificateModal()">Welcome To Our Story 📜</button>
+    </div>
+  </div>
+
+  <!-- Digital Love Certificate Voucher Modal -->
+  <div class="modal-overlay" id="cert-modal">
+    <div class="certificate-box">
+      <div class="cert-title">Certificate of Love</div>
+      <p style="font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; color: #886633; margin-bottom: 6px; font-weight: 800;">OFFICIALLY ISSUED</p>
+
+      <!-- Dual Photos: Madhu & Nirup -->
+      <div class="cert-photos-dual">
+        <div class="cert-photo-card">
+          <img src="./madhu.jpg" alt="Madhu Sree" class="cert-individual-photo" />
+          <span class="cert-photo-name">Madhu Sree 🌸</span>
+        </div>
+        <div class="cert-heart-divider">💖</div>
+        <div class="cert-photo-card">
+          <img src="./nirup.jpg" alt="Nirup" class="cert-individual-photo" />
+          <span class="cert-photo-name">Nirup ✨</span>
+        </div>
+      </div>
+
+      <!-- Approved Stamp & Lifetime Validity Badge -->
+      <div class="cert-approved-badge">
+        <div class="stamp-border">
+          <div class="stamp-text-approved">✓ APPROVED</div>
+          <div class="stamp-text-validity">VALIDITY: LIFETIME ♾️</div>
+        </div>
+      </div>
+
+      <!-- Her Special Response Container -->
+      <div class="cert-user-response" id="cert-user-response" style="display: none;">
+        <div class="cert-user-response-label">HER SPECIAL ANSWER ❤️</div>
+        <div class="cert-user-response-text" id="cert-response-quote"></div>
+      </div>
+
+      <div class="cert-body" id="cert-body">
+        This certifies that <strong>Madhu Sree</strong> & <strong>Nirup</strong> are officially bound by love forever!
+        <br/><br/>
+        Entitled to unlimited dates, late night talks, infinite coffee cups, and endless hugs.
+      </div>
+
+      <!-- Handwritten Signatures Section -->
+      <div class="cert-signatures-row">
+        <div class="cert-signature-box">
+          <div class="cert-sig-line">
+            <span class="cert-sig-text madhu-sig">Madhu Sree ♡</span>
+          </div>
+          <div class="cert-sig-label">Signature of Madhu Sree</div>
+        </div>
+        <div class="cert-signature-box">
+          <div class="cert-sig-line">
+            <span class="cert-sig-text nirup-sig">Nirup ~✨</span>
+          </div>
+          <div class="cert-sig-label">Signature of Nirup</div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="closeCertificateModal()">Close & Keep Forever ❤️</button>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
